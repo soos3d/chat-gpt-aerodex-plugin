@@ -27,6 +27,9 @@ This ChatGPT plugin can get the following data:
 
 - **Forecast Discussion**: The `forecastDiscussion` function returns the forecast discussion for an area specified by the user. Forecast discussions provide a narrative from a meteorologist about the current weather situation and the reasoning behind the issued forecasts.
 
+> ⚠️
+> Please be aware that while the data provided by the AeroDex plugin is sourced from the aviationweather.gov API, it should not be used as the sole resource for flight planning and decision-making. Always consult official and certified weather briefings from trusted sources before making any aviation-related decisions.
+
 ## Quickstart
 
 1. Clone the repository:
