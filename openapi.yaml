@@ -4,7 +4,7 @@ info:
   description: Interact with the aviation API to retrieve information useful for flight planning.
   version: 1.0.0
 servers:
-  - url: pilots.aerodex.xyz
+  - url: https://pilots.aerodex.xyz
 paths:
   /multiple-stations-metar:
     post:
