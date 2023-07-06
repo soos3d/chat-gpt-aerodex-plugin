@@ -9,10 +9,10 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://aerodex-plugin.onrender.com/openapi.yaml",
+    "url": "pilots.aerodex.xyz/openapi.yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://aerodex-plugin.onrender.com/logo.jpg",
+  "logo_url": "pilots.aerodex.xyz/logo.jpg",
   "contact_email": "davide.zambiasi@gmail.com",
   "legal_info_url": ""
 }
