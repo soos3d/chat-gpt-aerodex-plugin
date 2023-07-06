@@ -171,7 +171,7 @@ app.post("/get-airmet", async (req, res) => {
 // Route to fetch forecast discussion
 app.post("/forecast-discussion", async (req, res) => {
   console.log("Calling discussion");
-  const code = req.body.area;
+  const code = req.body.code;
   try {
     const data = await getDiscussion(code);
     res.json(data);

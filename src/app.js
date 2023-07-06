@@ -165,6 +165,7 @@ async function getAirmets() {
 
 async function getDiscussion(code) {
   try {
+    console.log(code);
     const response = await axios.get(
       `${BASE_URL}/cgi-bin/data/fcstdisc.php?cwa=k${code}`
     );
