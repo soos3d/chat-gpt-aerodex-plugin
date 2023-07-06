@@ -9,10 +9,10 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://aerodex-plugin.onrender.com/openapi.yaml",
+    "url": "http://localhost:3333/openapi.yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://aerodex-plugin.onrender.com/logo.jpg",
-  "contact_email": "davide.zambiasi@gmail.com",
-  "legal_info_url": ""
+  "logo_url": "http://localhost:3333/logo.jpg",
+  "contact_email": "YOUR_EMAIL",
+  "legal_info_url": "YOUR_PAGE"
 }
