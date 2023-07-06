@@ -35,7 +35,7 @@ This ChatGPT plugin can get the following data:
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/soos3d/chatgpt-plugin-development-quickstart-express.git
+git clone https://github.com/soos3d/chat-gpt-aerodex-plugin.git
 ```
 
 2. Install dependencies:
