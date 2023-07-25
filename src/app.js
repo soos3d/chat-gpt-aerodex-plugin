@@ -55,7 +55,7 @@ async function getMultipleStationsMetar(airportCodes) {
 
 async function getMultipleMetarWithTaf(airportCodes) {
   try {
-    const ids = airportCodes.join(",");
+    const ids = airportCodes.map((code) => code.toUpperCase()).join(",");
     const [metarResponse, tafResponse] = await Promise.all([
       axios.get(`${BASE_URL}/cgi-bin/data/metar.php?ids=${ids}&format=decoded`),
       axios.get(`${BASE_URL}/cgi-bin/data/metar.php?ids=${ids}&taf=on`),
