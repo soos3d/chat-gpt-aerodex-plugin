@@ -39,7 +39,8 @@ const BASE_URL = "https://beta.aviationweather.gov";
 
 async function getMultipleStationsMetar(airportCodes) {
   try {
-    const ids = airportCodes.join(",");
+    const ids = airportCodes.map((code) => code.toUpperCase()).join(",");
+    console.log(`IDs: ${ids}`);
     const response = await axios.get(
       `${BASE_URL}/cgi-bin/data/metar.php?ids=${ids}&format=decoded`
     );
