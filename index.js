@@ -86,27 +86,36 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to log requests and responses
-app.use(async (req, res, next) => {
-  const start = Date.now();
-  next();
-  const ms = Date.now() - start;
+// Middleware to capture the response body
+app.use((req, res, next) => {
+  var oldWrite = res.write,
+    oldEnd = res.end;
 
-  const log = {
-    method: req.method,
-    url: req.url,
-    status: res.statusCode,
-    length: res.get("Content-Length"),
-    responseTime: ms,
-    requestBody: req.body,
-    responseBody: res.body,
-    timestamp: new Date(),
+  var chunks = [];
+
+  res.write = function (chunk) {
+    chunks.push(chunk);
+
+    oldWrite.apply(res, arguments);
   };
 
-  await withDbConnection(async () => {
-    const db = mongoClient.db("AeroDex_plugin"); // replace with your database name
-    await db.collection("logs").insertOne(log);
-  });
+  res.end = function (chunk) {
+    if (chunk) chunks.push(chunk);
+
+    var body = Buffer.concat(chunks);
+    if (
+      res.getHeader("Content-Type").includes("text") ||
+      res.getHeader("Content-Type").includes("json")
+    ) {
+      body = body.toString("utf8");
+      console.log(req.path, body);
+      res.body = body; // Here's the body
+    }
+
+    oldEnd.apply(res, arguments);
+  };
+
+  next();
 });
 
 // Define content types for different file extensions
