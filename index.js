@@ -18,6 +18,29 @@ const {
   getDiscussion,
 } = require("./src/app");
 
+const { MongoClient } = require("mongodb");
+
+const mongoClient = new MongoClient(process.env.MONGO_CONNECTION);
+
+async function connect() {
+  await mongoClient.connect();
+}
+
+async function disconnect() {
+  await mongoClient.close();
+}
+
+async function withDbConnection(fn) {
+  try {
+    await connect();
+    return await fn();
+  } catch (error) {
+    console.error(`Error connecting to the database: ${error}`);
+  } finally {
+    await disconnect();
+  }
+}
+
 // Initialize Express application
 const app = express();
 
@@ -35,6 +58,56 @@ const corsOptions = {
 
 // Use CORS middleware with the specified options
 app.use(cors(corsOptions));
+
+// Middleware to capture the response body
+app.use((req, res, next) => {
+  var oldWrite = res.write,
+    oldEnd = res.end;
+
+  var chunks = [];
+
+  res.write = function (chunk) {
+    chunks.push(chunk);
+
+    oldWrite.apply(res, arguments);
+  };
+
+  res.end = function (chunk) {
+    if (chunk) chunks.push(chunk);
+
+    var body = Buffer.concat(chunks).toString("utf8");
+    console.log(req.path, body);
+
+    res.body = body; // Here's the body
+
+    oldEnd.apply(res, arguments);
+  };
+
+  next();
+});
+
+// Middleware to log requests and responses
+app.use(async (req, res, next) => {
+  const start = Date.now();
+  next();
+  const ms = Date.now() - start;
+
+  const log = {
+    method: req.method,
+    url: req.url,
+    status: res.statusCode,
+    length: res.get("Content-Length"),
+    responseTime: ms,
+    requestBody: req.body,
+    responseBody: res.body,
+    timestamp: new Date(),
+  };
+
+  await withDbConnection(async () => {
+    const db = mongoClient.db("AeroDex_plugin"); // replace with your database name
+    await db.collection("logs").insertOne(log);
+  });
+});
 
 // Define content types for different file extensions
 const contentTypes = {
