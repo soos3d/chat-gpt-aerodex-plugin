@@ -128,9 +128,8 @@ app.post("/multiple-stations-metar", async (req, res) => {
   console.log("Calling metar only");
   const stations = req.body.stations;
 
-  // Log the headers to the console
+  // Get headers
   const headers = req.headers;
-  console.log(headers);
 
   try {
     const data = await getMultipleStationsMetar(stations);
@@ -147,9 +146,13 @@ app.post("/multiple-stations-metar", async (req, res) => {
 app.post("/metar-with-taf", async (req, res) => {
   console.log("Calling metar with taf");
   const stations = req.body.stations;
+
+  // Get headers
+  const headers = req.headers;
+
   try {
     const data = await getMultipleMetarWithTaf(stations);
-    await logData("/metar-with-taf", req.body, data);
+    await logData("/metar-with-taf", req.body, headers, data);
     //console.log(data);
     res.json(data);
   } catch (error) {
@@ -162,9 +165,13 @@ app.post("/metar-with-taf", async (req, res) => {
 app.post("/get-pireps-standard", async (req, res) => {
   console.log("Calling pireps");
   const station = req.body.station;
+
+  // Get headers
+  const headers = req.headers;
+
   try {
     const data = await getPirepsNearStation(station);
-    await logData("/pireps", req.body, data);
+    await logData("/pireps", req.body, headers, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -177,9 +184,13 @@ app.post("/get-pireps-within-range", async (req, res) => {
   console.log("Calling pireps with range");
   const station = req.body.station;
   const range = req.body.range;
+
+  // Get headers
+  const headers = req.headers;
+
   try {
     const data = await getPirepsWithinDistance(station, range);
-    await logData("/pireps-range", req.body, data);
+    await logData("/pireps-range", req.body, headers, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -190,9 +201,13 @@ app.post("/get-pireps-within-range", async (req, res) => {
 // Route to fetch sigmets
 app.post("/get-sigmet", async (req, res) => {
   console.log("Calling sigmets");
+
+  // Get headers
+  const headers = req.headers;
+
   try {
     const data = await getSigmets();
-    await logData("/sigmets", req.body, data);
+    await logData("/sigmets", req.body, headers, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -203,9 +218,12 @@ app.post("/get-sigmet", async (req, res) => {
 // Route to fetch airmets
 app.post("/get-airmet", async (req, res) => {
   console.log("Calling airmet");
+
+  // Get headers
+  const headers = req.headers;
   try {
     const data = await getAirmets();
-    await logData("/airmet", req.body, data);
+    await logData("/airmet", req.body, headers, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
