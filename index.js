@@ -127,6 +127,7 @@ app.post("/airport-data", async (req, res) => {
   const city = req.body.city;
   try {
     const data = await getAirportData(city);
+    await logData("/airport-data", req.body, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -142,7 +143,6 @@ app.post("/multiple-stations-metar", async (req, res) => {
     const data = await getMultipleStationsMetar(stations);
     //console.log(data);
     await logData("/multiple-stations-metar", req.body, data);
-    console.log("Logged to MongoDB");
     res.json(data);
   } catch (error) {
     console.error(`Error fetching metar data: ${error}`);
@@ -156,6 +156,7 @@ app.post("/metar-with-taf", async (req, res) => {
   const stations = req.body.stations;
   try {
     const data = await getMultipleMetarWithTaf(stations);
+    await logData("/metar-with-taf", req.body, data);
     //console.log(data);
     res.json(data);
   } catch (error) {
@@ -170,6 +171,7 @@ app.post("/get-pireps-standard", async (req, res) => {
   const station = req.body.station;
   try {
     const data = await getPirepsNearStation(station);
+    await logData("/pireps", req.body, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -184,6 +186,7 @@ app.post("/get-pireps-within-range", async (req, res) => {
   const range = req.body.range;
   try {
     const data = await getPirepsWithinDistance(station, range);
+    await logData("/pireps-range", req.body, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -196,6 +199,7 @@ app.post("/get-sigmet", async (req, res) => {
   console.log("Calling sigmets");
   try {
     const data = await getSigmets();
+    await logData("/sigmets", req.body, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -208,6 +212,7 @@ app.post("/get-airmet", async (req, res) => {
   console.log("Calling airmet");
   try {
     const data = await getAirmets();
+    await logData("/airmet", req.body, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
@@ -221,6 +226,7 @@ app.post("/forecast-discussion", async (req, res) => {
   const code = req.body.code;
   try {
     const data = await getDiscussion(code);
+    await logData("/forecast-discussion", req.body, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
