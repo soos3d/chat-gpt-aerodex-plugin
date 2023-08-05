@@ -41,6 +41,28 @@ async function withDbConnection(fn) {
   }
 }
 
+async function logData(endpoint, requestBody, response) {
+  // Get the database and collection
+  const db = mongoClient.db("AeroDex");
+  const collection = db.collection("logs");
+
+  // Define the document to insert
+  const document = {
+    endpoint: endpoint,
+    requestBody: requestBody,
+    response: response,
+    timestamp: new Date(),
+  };
+
+  // Insert the document into the collection
+  try {
+    await collection.insertOne(document);
+    console.log(`Logged data for endpoint ${endpoint}`);
+  } catch (error) {
+    console.error(`Error logging data for endpoint ${endpoint}: ${error}`);
+  }
+}
+
 // Initialize Express application
 const app = express();
 
@@ -119,6 +141,8 @@ app.post("/multiple-stations-metar", async (req, res) => {
   try {
     const data = await getMultipleStationsMetar(stations);
     //console.log(data);
+    await logData("/multiple-stations-metar", req.body, data);
+    console.log("Logged to MongoDB");
     res.json(data);
   } catch (error) {
     console.error(`Error fetching metar data: ${error}`);
@@ -212,6 +236,29 @@ app.all("/*", (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    await mongoClient.connect();
+    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error(`Failed to connect to MongoDB: ${error}`);
+  }
 });
+
+// Event listeners for server shutdown
+process.on("SIGINT", closeDatabaseConnection);
+process.on("SIGTERM", closeDatabaseConnection);
+process.on("SIGUSR2", closeDatabaseConnection); // For nodemon restarts
+
+// Function to close the MongoDB connection
+async function closeDatabaseConnection() {
+  try {
+    await mongoClient.close();
+    console.log("MongoDB connection closed");
+    process.exit(0);
+  } catch (error) {
+    console.error(`Error closing MongoDB connection: ${error}`);
+    process.exit(1);
+  }
+}
