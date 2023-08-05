@@ -22,7 +22,7 @@ const { MongoClient } = require("mongodb");
 
 const mongoClient = new MongoClient(process.env.MONGO_CONNECTION);
 
-async function logData(endpoint, requestBody, response) {
+async function logData(endpoint, requestBody, headers, response) {
   // Get the database and collection
   const db = mongoClient.db("AeroDex");
   const collection = db.collection("logs");
@@ -31,6 +31,13 @@ async function logData(endpoint, requestBody, response) {
   const document = {
     endpoint: endpoint,
     requestBody: requestBody,
+    headers: {
+      host: headers.host,
+      userAgent: headers["user-agent"],
+      secChUaPlatform: headers["sec-ch-ua-platform"],
+      openaiEphemeralUserId: headers["openai-ephemeral-user-id"],
+      openaiConversationId: headers["openai-conversation-id"],
+    },
     response: response,
     timestamp: new Date(),
   };
@@ -128,7 +135,7 @@ app.post("/multiple-stations-metar", async (req, res) => {
   try {
     const data = await getMultipleStationsMetar(stations);
     //console.log(data);
-    await logData("/multiple-stations-metar", req.body, data);
+    await logData("/multiple-stations-metar", req.body, headers, data);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching metar data: ${error}`);
