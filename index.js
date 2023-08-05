@@ -22,25 +22,6 @@ const { MongoClient } = require("mongodb");
 
 const mongoClient = new MongoClient(process.env.MONGO_CONNECTION);
 
-async function connect() {
-  await mongoClient.connect();
-}
-
-async function disconnect() {
-  await mongoClient.close();
-}
-
-async function withDbConnection(fn) {
-  try {
-    await connect();
-    return await fn();
-  } catch (error) {
-    console.error(`Error connecting to the database: ${error}`);
-  } finally {
-    await disconnect();
-  }
-}
-
 async function logData(endpoint, requestBody, response) {
   // Get the database and collection
   const db = mongoClient.db("AeroDex");
@@ -139,6 +120,11 @@ app.post("/airport-data", async (req, res) => {
 app.post("/multiple-stations-metar", async (req, res) => {
   console.log("Calling metar only");
   const stations = req.body.stations;
+
+  // Log the headers to the console
+  const headers = req.headers;
+  console.log(headers);
+
   try {
     const data = await getMultipleStationsMetar(stations);
     //console.log(data);
