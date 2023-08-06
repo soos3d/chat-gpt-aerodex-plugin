@@ -112,10 +112,13 @@ app.get("/logo.jpg", (req, res) => {
 
 // Route to fetch airport data
 app.post("/airport-data", async (req, res) => {
+  console.log("Calling airport data");
   const city = req.body.city;
   try {
     const data = await getAirportData(city);
+    console.log(data);
     await logData("/airport-data", req.body, data);
+
     res.json(data);
   } catch (error) {
     console.error(`Error fetching  data: ${error}`);
