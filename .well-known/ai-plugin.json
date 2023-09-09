@@ -2,17 +2,17 @@
   "schema_version": "v1",
   "name_for_human": "AeroDex",
   "name_for_model": "AeroDex",
-  "description_for_human": "Aviation data from aviationweather.gov for entertainment. Not for pre-flight decision making.",
+  "description_for_human": "Get aviation weather data from aviationweather.gov and access Advisory Circulars knowledge for pilots and student pilots.",
   "description_for_model": "This interacts with the an aviation API allowing you to get information useful for pilots",
   "auth": {
     "type": "none"
   },
   "api": {
     "type": "openapi",
-    "url": "https://pilots.aerodex.xyz/openapi.yaml",
+    "url": "http://localhost:3333/openapi.yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://pilots.aerodex.xyz/logo.jpg",
+  "logo_url": "http://localhost:3333/logo.jpg",
   "contact_email": "davide.zambiasi@gmail.com",
   "legal_info_url": "https://www.aerodex.xyz/policy"
 }

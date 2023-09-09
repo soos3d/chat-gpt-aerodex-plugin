@@ -1,3 +1,7 @@
+# venv
+aerodex/
+__pycache__/
+.DS_Store/
 # Logs
 logs
 *.log

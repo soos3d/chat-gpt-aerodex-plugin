@@ -4,7 +4,7 @@ info:
   description: Interact with the aviation API to retrieve information useful for flight planning.
   version: 1.0.0
 servers:
-  - url: https://pilots.aerodex.xyz
+  - url: http://localhost:3333 # https://pilots.aerodex.xyz
 paths:
   /multiple-stations-metar:
     post:
@@ -235,5 +235,33 @@ paths:
                   description: The forecast discussion
         "404":
           description: Not found
+        "500":
+          description: Server error
+  /advisory_circulars_list:
+    post:
+      summary: Get access to a complete list of Advisory Cisculars
+      operationId: ACList
+      description: This API gives access to an assistant with the full list of Advisory Circulars. Format the question from the user to ask the assistant, which will be able to give you which ACs match the topic the user is looking for. Example, 'Is there an ac about icing?''.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: The question to ask to find an AC matching the topics the user is looking for.
+      responses:
+        "200":
+          description: Request successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: The result from the assistant.
         "500":
           description: Server error
