@@ -1,0 +1,43 @@
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environment directories and env variables
+venv/
+.env/
+alpha_env/
+aerodex/
+*.env
+*.env.*
+env.*
+.env
+
+# Ignore Git and version control directories
+.git/
+.gitignore
+.svn/
+
+# Ignore testing and CI/CD configuration
+.tox/
+.coverage
+.travis.yml
+.gitlab-ci.yml
+
+# Ignore IDE configuration files
+.vscode/
+.idea/
+
+# Ignore logs and databases
+*.log
+*.sqlite
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Ignore build and distribution directories
+build/
+dist/
+*.egg-info/
