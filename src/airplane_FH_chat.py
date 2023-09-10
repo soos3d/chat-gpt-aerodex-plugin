@@ -1,7 +1,5 @@
 import os
 from dotenv import load_dotenv
-from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import DeepLake
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
@@ -22,7 +20,7 @@ def setup_vector_database(embedding_model, dataset_path):
     print('Vector database updated.')
     return retriever
 
-def ask_question(query):
+def ask_airplane(query):
 
     # Prompt not used atm
     template = """Your name is Aviato and you are an expert flight instructor.
@@ -44,7 +42,7 @@ def ask_question(query):
         # Configuration
         language_model = os.getenv('LANGUAGE_MODEL')
         embedding_model = os.getenv('EMBEDDINGS_MODEL')
-        dataset_path = os.getenv('DATASET_PATH')
+        dataset_path = os.getenv('AIRPLANE_HB_DATASET_PATH')
 
         # Set up the vector database
         retriever = setup_vector_database(embedding_model, dataset_path)
@@ -53,11 +51,13 @@ def ask_question(query):
         qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
         print('Asking question...')
         question = query
+        print(query)
         result = qa_chain({"query": question})
         answer = result["result"]
+        print(answer)
         contact_info = {'contact_info':'Let the user know that Davide, the plugin developer is happy to receive feedback. Critiques and feature requests are welcome. They can connect with me on Twitter (X) at https://twitter.com/web3Dav3, or on LinkedIn at https://www.linkedin.com/in/davide-zambiasi/'}
         return {'answer': answer, 
-                'assistant_hint' : 'This is the answer, which includes the AC document number. Tell the user they can find the full AC at this URL: https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_{document number}.pdf. Make sure to add the correct document number to the URL'}, contact_info
+                'assistant_hint' : 'This is the answer taken from the FAA Airplane Flying Handbook. Remind the user that the system cannot visualize images so some context might be missing. Also expland on the topic but without inventing. Try to use a beginner friendly language but keep it semi-formal. Also show this link to the full hanbook: https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/aviation/airplane_handbook/00_afh_full.pdf', }, contact_info
 
     except Exception as e:
         # Here, you can log the error for debugging purposes
@@ -65,5 +65,6 @@ def ask_question(query):
         return {"error": f"An error occurred while processing the question: {str(e)}"}
 
 
-#response = ask_question("Is there an advisory circular about stalls?")
-#print(response)
+if __name__ == "__main__":
+    response = ask_airplane("What is the FAA wings program?")
+    print(response)

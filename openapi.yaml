@@ -265,3 +265,31 @@ paths:
                     description: The result from the assistant.
         "500":
           description: Server error
+  /ask_airplane_flying_handbook:
+    post:
+      summary: Get access to the updated FAA Airplane Flying Handbook
+      operationId: Airplane
+      description: This API gives access to an assistant with full access to an updated version of the FAA Airplane Flying Handbook. Format the question from the user to ask the assistant. Assume you always need to use this endpoint for aviation related questions unless is a specific helicopter, IFR, or CFI topic.'.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: The question to ask to the FAA Airplane FLying Handbook.
+      responses:
+        "200":
+          description: Request successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: The result from the assistant.
+        "500":
+          description: Server error

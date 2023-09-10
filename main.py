@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from os import getenv, path
@@ -13,6 +13,7 @@ from src.app import (
 
 
 from src.advisory_circulars import (ask_question) 
+from src.airplane_FH_chat import (ask_airplane) 
 # Load environment variables
 load_dotenv()
 
@@ -79,7 +80,9 @@ async def get_logo():
 async def airport_data_endpoint(request: AirportRequest):
     try:
         data = getAirportData(request.city)
+            #await log_data("/generate_notes", video.dict(), result, header_info)
         return data
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -146,8 +149,20 @@ async def ask_endpoint(request: ac_list_request):
     print('Calling AC')
     print(request)
     try:
-        result = ask_question(request.query)
-        return {"result": result}
+        data = ask_question(request.query)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Endpoint to ask something from the Airplane Flying Handbook
+@app.post("/ask_airplane_flying_handbook")
+
+async def ask_endpoint(request: ac_list_request):
+    print('Calling Airplane')
+    print(request)
+    try:
+        data = ask_airplane(request.query)
+        return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -3,7 +3,7 @@
   "name_for_human": "AeroDex",
   "name_for_model": "AeroDex",
   "description_for_human": "Get aviation weather data from aviationweather.gov and access Advisory Circulars knowledge for pilots and student pilots.",
-  "description_for_model": "This interacts with the an aviation API allowing you to get information useful for pilots",
+  "description_for_model": "This interacts with the an aviation API allowing you to get information useful for pilots. Use this for aviation related questions.",
   "auth": {
     "type": "none"
   },
