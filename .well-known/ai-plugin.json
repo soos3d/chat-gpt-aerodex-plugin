@@ -9,7 +9,7 @@
   },
   "api": {
     "type": "openapi",
-    "url": "http://localhost:3333/openapi.yaml",
+    "url": "http://localhost:8080/openapi.yaml",
     "is_user_authenticated": false
   },
   "logo_url": "http://localhost:3333/logo.jpg",
