@@ -2,7 +2,7 @@
   "schema_version": "v1",
   "name_for_human": "AeroDex",
   "name_for_model": "AeroDex",
-  "description_for_human": "Get aviation weather from aviationweather.gov and access Advisory Circulars and handbooks for pilots and student pilots.",
+  "description_for_human": "Get aviation weather from aviationweather.gov and access Advisory Circulars & handbooks for pilots and student pilots.",
   "description_for_model": "Interacts with an aviation API for pilots and student pilots data. Use it for aviation-related queries.",
   "auth": {
     "type": "none"
