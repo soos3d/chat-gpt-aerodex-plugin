@@ -30,8 +30,9 @@ def getAirportData(city: str):
 
 def getMultipleStationsMetar(airportCodes: list):
     print('Calling multiple metars')
-    ids = ",".join(["K" + code.upper() if not code.upper().startswith("K") else code.upper() for code in airportCodes])
+    ids = ",".join(["K" + code.upper() if len(code) == 3 else code.upper() for code in airportCodes])
     print(ids)
+
     url = f"{BASE_URL}/cgi-bin/data/metar.php?ids={ids}&format=decoded"
 
     try:
@@ -52,7 +53,7 @@ def getMultipleStationsMetar(airportCodes: list):
 
 def getMultipleMetarWithTaf(airportCodes: list):
     print('Calling multiple metars with taf')
-    ids = ",".join(["K" + code.upper() if not code.upper().startswith("K") else code.upper() for code in airportCodes])
+    ids = ",".join(["K" + code.upper() if len(code) == 3 else code.upper() for code in airportCodes])
 
     print(ids)
     metar_url = f"{BASE_URL}/cgi-bin/data/metar.php?ids={ids}&format=decoded"
@@ -81,10 +82,12 @@ def getMultipleMetarWithTaf(airportCodes: list):
 
 def getPirepsNearStation(airportCode: str):
     print('Calling pireps')
-    url = f"{BASE_URL}/cgi-bin/data/pirep.php?id={airportCode}&format=decoded"
 
-    if not airportCode.startswith('K'):
+    if len(airportCode) == 3 and not airportCode.startswith('K'):
         airportCode = 'K' + airportCode
+        airportCode = airportCode.upper()
+    print(airportCode)
+    url = f"{BASE_URL}/cgi-bin/data/pirep.php?id={airportCode}&format=decoded"
 
     try:
         print('Calling pireps, code:', airportCode)
@@ -103,9 +106,11 @@ def getPirepsNearStation(airportCode: str):
 
 def getPirepsWithinDistance(airportCode: str, range: int):
     print('Calling multiple metars with range')
-    if not airportCode.startswith('K'):
+    if len(airportCode) == 3 and not airportCode.startswith('K'):
         airportCode = 'K' + airportCode
+        airportCode = airportCode.upper()
     url = f"{BASE_URL}/cgi-bin/data/pirep.php?id={airportCode}&format=decoded&distance={range}"
+
     try:
         print('Calling pireps, code:', airportCode, 'Range:', range)
         response = requests.get(url)
@@ -193,7 +198,7 @@ if __name__ == "__main__":
     print("--------------------------------------------------")
 
     # Test getMultipleStationsMetar
-    airport_codes = ["kttd,kpdx"]
+    airport_codes = ["ttd"]
     print("Fetching METAR data for stations:", airport_codes)
     #print(getMultipleStationsMetar(airport_codes))
     print("--------------------------------------------------")
@@ -204,15 +209,15 @@ if __name__ == "__main__":
     print("--------------------------------------------------")
 
     # Test getPirepsNearStation
-    airport_code = "kord"
+    airport_code = "ord"
     print("Fetching PIREPs near station:", airport_code)
-    #print(getPirepsNearStation(airport_code))
+    print(getPirepsNearStation(airport_code))
     print("--------------------------------------------------")
 
     # Test getPirepsWithinDistance
     range_distance = 50  # example distance in miles
     print(f"Fetching PIREPs within {range_distance} miles of station:", airport_code)
-    #print(getPirepsWithinDistance(airport_code, range_distance))
+    print(getPirepsWithinDistance(airport_code, range_distance))
     print("--------------------------------------------------")
 
     # Test getSigmets
@@ -228,5 +233,5 @@ if __name__ == "__main__":
     # Test getDiscussion
     code = "PQR"  # example code
     print(f"Fetching discussion for code: {code}")
-    print(getDiscussion(code))
+    #print(getDiscussion(code))
     print("--------------------------------------------------")
