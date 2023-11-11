@@ -4,7 +4,7 @@ info:
   description: Interact with the aviation API to retrieve information useful for flight planning.
   version: 1.0.0
 servers:
-  - url: https://api.aerodex.xyz # https://pilots.aerodex.xyz
+  - url: http://localhost:3333 # https://api.aerodex.xyz
 paths:
   /multiple-stations-metar:
     post:
@@ -170,11 +170,11 @@ paths:
           description: Not found
         "500":
           description: Server error
-  /get-sigmet:
+  /get-sigmet-airmet:
     post:
       summary: Get the active airmets and sigmets
-      operationId: getSigmets
-      description: This API returns the decoded active sigmets.
+      operationId: getSigmetsAirmets
+      description: This API returns the decoded active sigmets and airmets.
       responses:
         "200":
           description: Request successful
@@ -184,16 +184,16 @@ paths:
                 type: array
                 items:
                   type: object
-                  description: The decoded active sigmets
+                  description: The decoded active sigmets and airmets
         "404":
           description: Not found
         "500":
           description: Server error
-  /get-airmet:
+  /get-winds-aloft:
     post:
-      summary: Get the active airmets
-      operationId: getAirmets
-      description: This API returns the decoded active airmets.
+      summary: Get the winds aloft
+      operationId: getWinds
+      description: This API returns winds aloft in the 12 hour forecast
       responses:
         "200":
           description: Request successful
@@ -203,7 +203,7 @@ paths:
                 type: array
                 items:
                   type: object
-                  description: The decoded active sigmets
+                  description: The winds aloft.
         "404":
           description: Not found
         "500":
